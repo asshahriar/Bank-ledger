@@ -1,63 +1,62 @@
-🏦 Backend Ledger API
+# 🏦 Backend Ledger API
 A backend-only banking ledger system built with Node.js, Express.js, MongoDB, and Mongoose.
 This project provides a RESTful API for user authentication, account management, ledger-based balance calculation, fund transfers, system-generated initial funds, JWT authentication, token blacklisting, and email notifications.
 The project was built as a learning project to understand real-world backend concepts such as authentication, authorization, database relationships, financial transactions, idempotency, MongoDB transactions, immutable ledger records, and external email services.
----
-🚀 Live API
+
+## 🚀 Live API
 The API is deployed on Render:
 https://bank-ledger-0h3m.onrender.com
-Health Check
 ```http
 GET /
 ```
-Response:
+## Response:
 ```text
 Ledger Service is up and running
 ```
 > \*\*Note:\*\* This is a backend-only project. You can interact with the API using Postman, Insomnia, Thunder Client, curl, or another REST API client.
 ---
-✨ Features
-User registration
-User login and logout
-JWT-based authentication
-Cookie-based authentication
-Bearer token authentication
-Password hashing with bcrypt
-JWT token blacklisting
-Automatic blacklist token expiration
-User account creation
-Multiple accounts per user
-Account status management
-Ledger-based balance calculation
-Fund transfers between accounts
-Transaction status management
-Idempotency key support
-MongoDB transactions
-Debit and credit ledger entries
-System-user authorization
-Initial funds functionality
-Registration email notifications
-Transaction email notifications
+## ✨ Features
+- User registration
+- User login and logout
+- JWT-based authentication
+- Cookie-based authentication
+- Bearer token authentication
+- Password hashing with bcrypt
+- JWT token blacklisting
+- Automatic blacklist token expiration
+- User account creation
+- Multiple accounts per user
+- Account status management
+- Ledger-based balance calculation
+- Fund transfers between accounts
+- Transaction status management
+- Idempotency key support
+- MongoDB transactions
+- Debit and credit ledger entries
+- System-user authorization
+- Initial funds functionality
+- Registration email notifications
+- Transaction email notifications
+
+## 🛠️ Tech Stack
+- Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Authentication & Security
+- JSON Web Token (JWT)
+- bcryptjs
+- Cookie-based authentication
+- Bearer token authentication
+- JWT token blacklist
+- Email
+- Nodemailer
+- Gmail OAuth2
+- Deployment
+- Render
 ---
-🛠️ Tech Stack
-Backend
-Node.js
-Express.js
-MongoDB
-Mongoose
-Authentication & Security
-JSON Web Token (JWT)
-bcryptjs
-Cookie-based authentication
-Bearer token authentication
-JWT token blacklist
-Email
-Nodemailer
-Gmail OAuth2
-Deployment
-Render
----
-🏗️ Architecture
+## 🏗️ Architecture
 The application follows a layered backend architecture:
 ```text
 Client / Postman
@@ -92,8 +91,8 @@ Models
 Defines MongoDB schemas, relationships, validation, indexes, and database behavior.
 Services
 Contains external service logic such as email delivery.
----
-📁 Project Structure
+
+# 📁 Project Structure
 ```text
 backend-ledger/
 │
@@ -134,11 +133,11 @@ backend-ledger/
 └── README.md
 ```
 ---
-🔐 Authentication
-The application uses JWT authentication.
-JWT tokens are created during:
-Registration
-Login
+## 🔐 Authentication
+- The application uses JWT authentication.
+- JWT tokens are created during:
+- Registration
+- Login
 Tokens expire after:
 ```text
 3 days
@@ -153,7 +152,7 @@ Authorization Header
 Authorization: Bearer <JWT>
 ```
 ---
-🔑 Authentication Flow
+## 🔑 Authentication Flow
 ```text
 Register / Login
        │
@@ -180,7 +179,7 @@ Generate JWT
                Allow Request
 ```
 ---
-👤 Authentication API
+## 👤 Authentication API
 Base URL:
 ```text
 https://bank-ledger-0h3m.onrender.com/api/auth
@@ -300,7 +299,7 @@ Status: `200 OK`
 }
 ```
 ---
-🛡️ Token Blacklisting
+## 🛡️ Token Blacklisting
 When a user logs out, their JWT is stored in the token blacklist collection.
 ```text
 User Logout
@@ -319,8 +318,8 @@ Future requests reject JWT
 ```
 Blacklist entries automatically expire after 3 days using a MongoDB TTL index.
 This prevents a logged-out token from remaining usable after logout.
----
-🏦 Account API
+
+# 🏦 Account API
 Base URL:
 ```text
 https://bank-ledger-0h3m.onrender.com/api/accounts
@@ -448,7 +447,7 @@ $1,200
 The ledger acts as the source of truth for account balances.
 > \*\*Note:\*\* The account model currently uses `INR` as its default currency. The example above uses `$` only to explain the calculation conceptually.
 ---
-💸 Transaction API
+## 💸 Transaction API
 Base URL:
 ```text
 https://bank-ledger-0h3m.onrender.com/api/transactions
@@ -671,18 +670,19 @@ The account balance is derived from these entries:
 Balance = Credits - Debits
 ```
 ---
-🔒 Ledger Immutability
+## 🔒 Ledger Immutability
 Ledger entries are designed to be immutable.
 The ledger model prevents operations such as:
-Update
-Delete
-Replace
-Bulk update
-Bulk delete
+ - Update
+- Delete
+- Replace
+- Bulk update
+- Bulk delete
+
 Once a ledger entry is created, it should not be modified.
 This helps preserve the historical integrity of financial records.
----
-📊 Transaction States
+
+## 📊 Transaction States
 Transactions support four states:
 ```text
 PENDING
@@ -690,18 +690,18 @@ COMPLETED
 FAILED
 REVERSED
 ```
-PENDING
-The transaction has started but hasn't finished processing.
-COMPLETED
-The transfer successfully completed.
-FAILED
-The transaction failed during processing.
-REVERSED
-The transaction was reversed.
+#### PENDING
+- The transaction has started but hasn't finished processing.
+#### COMPLETED
+- The transfer successfully completed.
+#### FAILED
+- The transaction failed during processing.
+#### REVERSED
+- The transaction was reversed.
 ---
-🗄️ Database Models
+## 🗄️ Database Models
 The project uses the following MongoDB collections.
----
+
 User
 Collection:
 ```text
@@ -709,15 +709,16 @@ user
 ```
 Fields:
 Field	Type	Description
-`\_id`	ObjectId	User ID
-`name`	String	User name
-`email`	String	Unique email
-`password`	String	Hashed password
-`systemUser`	Boolean	System-user authorization
-`createdAt`	Date	Creation timestamp
-`updatedAt`	Date	Update timestamp
+- `\_id`	ObjectId	User ID
+- `name`	String	User name
+- `email`	String	Unique email
+- `password`	String	Hashed password
+- `systemUser`	Boolean	System-user authorization
+- `createdAt`	Date	Creation timestamp
+- `updatedAt`	Date	Update timestamp
+
 Passwords are hashed using bcrypt before being stored.
----
+
 Account
 Collection:
 ```text
@@ -725,12 +726,13 @@ account
 ```
 Fields:
 Field	Type	Description
-`\_id`	ObjectId	Account ID
-`user`	ObjectId	Account owner
-`status`	String	Account status
-`currency`	String	Account currency
-`createdAt`	Date	Creation timestamp
-`updatedAt`	Date	Update timestamp
+- `\_id`	ObjectId	Account ID
+- `user`	ObjectId	Account owner
+- `status`	String	Account status
+- `currency`	String	Account currency
+- `createdAt`	Date	Creation timestamp
+- `updatedAt`	Date	Update timestamp
+
 Account statuses:
 ```text
 ACTIVE
@@ -749,14 +751,14 @@ transaction
 ```
 Fields:
 Field	Type	Description
-`\_id`	ObjectId	Transaction ID
-`fromAccount`	ObjectId	Sender account
-`toAccount`	ObjectId	Receiver account
-`amount`	Number	Transfer amount
-`status`	String	Transaction state
-`idempotencyKey`	String	Unique transaction key
-`createdAt`	Date	Creation timestamp
-`updatedAt`	Date	Update timestamp
+- `\_id`	ObjectId	Transaction ID
+- `fromAccount`	ObjectId	Sender account
+- `toAccount`	ObjectId	Receiver account
+- `amount`	Number	Transfer amount
+- `status`	String	Transaction state
+- `idempotencyKey`	String	Unique transaction key
+- `createdAt`	Date	Creation timestamp
+- `updatedAt`	Date	Update timestamp
 ---
 Ledger
 Collection:
@@ -765,10 +767,10 @@ ledger
 ```
 Fields:
 Field	Type	Description
-`account`	ObjectId	Related account
-`amount`	Number	Ledger amount
-`transaction`	ObjectId	Related transaction
-`type`	String	CREDIT or DEBIT
+- `account`	ObjectId	Related account
+- `amount`	Number	Ledger amount
+- `transaction`	ObjectId	Related transaction
+- `type`	String	CREDIT or DEBIT
 Ledger types:
 ```text
 CREDIT
@@ -783,9 +785,9 @@ tokenBlackList
 ```
 Fields:
 Field	Type	Description
-`token`	String	Blacklisted JWT
-`createdAt`	Date	Creation timestamp
-`updatedAt`	Date	Update timestamp
+- `token`	String	Blacklisted JWT
+- `createdAt`	Date	Creation timestamp
+- `updatedAt`	Date	Update timestamp
 Blacklist records automatically expire after 3 days using a MongoDB TTL index.
 ---
 🛡️ Security
@@ -846,15 +848,15 @@ Authentication: OAuth2
 ---
 🌐 Complete API Route Summary
 Method	Endpoint	Authentication	Description
-`GET`	`/`	No	API health check
-`POST`	`/api/auth/register`	No	Register user
-`POST`	`/api/auth/login`	No	Login user
-`POST`	`/api/auth/logout`	Token	Logout user
-`POST`	`/api/accounts/`	User	Create account
-`GET`	`/api/accounts/`	User	Get user's accounts
-`GET`	`/api/accounts/balance/:accountId`	User	Get account balance
-`POST`	`/api/transactions/`	User	Transfer funds
-`POST`	`/api/transactions/system/initial-funds`	System User	Add initial funds
+- `GET`	`/`	No	API health check
+- `POST`	`/api/auth/register`	No	Register user
+- `POST`	`/api/auth/login`	No	Login user
+- `POST`	`/api/auth/logout`	Token	Logout user
+- `POST`	`/api/accounts/`	User	Create account
+- `GET`	`/api/accounts/`	User	Get user's accounts
+- `GET`	`/api/accounts/balance/:accountId`	User	Get account balance
+- `POST`	`/api/transactions/`	User	Transfer funds
+- `POST`	`/api/transactions/system/initial-funds`	System User	Add initial funds
 ---
 🧪 Testing With Postman
 You can test the API using:
@@ -1052,12 +1054,12 @@ The database connection is initialized when the server starts.
 ---
 🔐 Environment Variables
 Variable	Purpose
-`MONGO\_URI`	MongoDB connection string
-`JWT\_SECRET`	Secret used to sign JWTs
-`EMAIL\_USER`	Gmail account used for email
-`CLIENT\_ID`	Google OAuth2 client ID
-`CLIENT\_SECRET`	Google OAuth2 client secret
-`REFRESH\_TOKEN`	Google OAuth2 refresh token
+- `MONGO\_URI`	MongoDB connection string
+- `JWT\_SECRET`	Secret used to sign JWTs
+- `EMAIL\_USER`	Gmail account used for email
+- `CLIENT\_ID`	Google OAuth2 client ID
+- `CLIENT\_SECRET`	Google OAuth2 client secret
+- `REFRESH\_TOKEN`	Google OAuth2 refresh token
 Never expose these values publicly.
 ---
 🚀 Deployment
@@ -1069,108 +1071,18 @@ Production URL
 https://bank-ledger-0h3m.onrender.com
 ```
 ---
-🧠 Key Backend Concepts Demonstrated
-This project was created as a learning project, but it implements several backend concepts used in production systems.
-Authentication
-JWT
-Cookies
-Bearer authentication
-Password hashing
-Token expiration
-Authorization
-Protected routes
-System-user authorization
-Database Design
-MongoDB
-Mongoose
-ObjectId relationships
-Indexes
-TTL indexes
-Financial Data Modeling
-Accounts
-Transactions
-Ledger entries
-Credits
-Debits
-Balance calculation
-Transaction Safety
-MongoDB sessions
-Database transactions
-Idempotency keys
-Immutable ledger records
-External Services
-Gmail OAuth2
-Nodemailer
-Deployment
-Render
-Environment variables
-Production debugging
----
-🎯 Learning Outcomes
-Building this project helped me understand backend development beyond simple CRUD applications.
-Some of the main concepts I learned include:
-Designing REST APIs
-Building authentication systems
-Hashing passwords
-Working with JWT
-Implementing authorization middleware
-Connecting Node.js applications to MongoDB
-Designing database relationships
-Working with MongoDB transactions
-Designing ledger-based financial systems
-Implementing idempotency
-Handling immutable financial records
-Sending transactional emails
-Deploying backend applications
-Debugging production issues
----
-🔮 Future Improvements
-Possible future improvements include:
-Add refresh tokens
-Add email verification
-Add password reset
-Add rate limiting
-Add request validation using Zod or Joi
-Add centralized error handling
-Add transaction history endpoint
-Add account freeze/close functionality
-Add pagination
-Add transaction reversal functionality
-Add comprehensive automated tests
-Add Swagger/OpenAPI documentation
-Add Docker support
-Add CI/CD
-Add frontend dashboard
-Improve financial precision using integer minor units instead of floating-point numbers
-Improve authorization checks to ensure users can only transfer from accounts they own
----
-📌 Known Limitations
-This project is primarily a learning project and is not intended to process real financial transactions.
-It should not be used for actual banking or financial operations without significant additional security, auditing, compliance, testing, monitoring, and infrastructure work.
----
-👨‍💻 Author
-Shahriar
-Full Stack Developer | Aspiring Software Engineer
-I built this project while learning backend development and exploring how financial systems can be modeled using APIs, databases, authentication, transactions, and ledgers.
----
-⭐ Project Highlights
-Some of the concepts I'm particularly proud of implementing:
-```text
-🔐 JWT Authentication
-🔑 Password Hashing
-🛡️ Protected Routes
-👤 System User Authorization
-🏦 Account Management
-💰 Ledger-Based Balance Calculation
-💸 Fund Transfers
-🔄 Idempotency
-📚 Immutable Ledger Records
-🗃️ MongoDB Transactions
-🚫 JWT Token Blacklisting
-📧 Transactional Emails
-🚀 Render Deployment
-```
----
-⭐ If you found this project interesting
-Feel free to explore the source code, test the API, or connect with me.
-Built with Node.js, Express.js, MongoDB, Mongoose, and a lot of learning.
+
+## 👨‍💻 From the Developer
+
+Hi, I'm **Shahriar**, a Full Stack Developer and aspiring Software Engineer.
+
+I'm always open to **freelance projects, collaborations, and interesting ideas**. Feel free to reach out!
+
+- 🌐 [Portfolio](https://shahriarswe.com)
+- 🐙 [GitHub](https://github.com/asshahriar)
+- ❤️ [Youtube](https://youtube.com/shahriarswe)
+- 📸 [Instagram](https://instagram.com/shahriarswe)
+- 📸 [X](https://x.com/shahriar_swe/)
+- 📧 [Email](mailto:asshahriark@gmail.com)
+
+**Thanks for checking out my project! ⭐**
