@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import emailService from "../services/email.service.js";
+import tokenBlackListModel from "../models/blackList.model.js";
 
 /**
  * - user register controller
@@ -15,7 +16,7 @@ async function userRegisterController(req, res) {
 
 	if (isExists) {
 		return res.status(422).json({
-			message: "User Already Exists with Email.",
+			message: "User already exists with email.",
 			status: "failed",
 		});
 	}
@@ -26,9 +27,11 @@ async function userRegisterController(req, res) {
 		name,
 	});
 
-	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {expiresIn: "3d"});
+	const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+		expiresIn: "3d",
+	});
 
-	res.cookie("token", token)
+	res.cookie("token", token);
 
 	res.status(201).json({
 		user: {
@@ -36,30 +39,33 @@ async function userRegisterController(req, res) {
 			email: user.email,
 			name: user.name,
 		},
-		token
-	})
+		token,
+	});
 
-	await emailService.sendRegisterationEmail(user.email, user.name)
+	await emailService.sendRegistrationEmail(user.email, user.name);
 }
 
-
-/** 
+/**
  * - User Login Controller
  * - POST /api/auth/login
  */
+
 async function userLoginController(req, res) {
-	const {email, password} = req.body
+	const { email, password } = req.body;
 
-	const user = await userModel.findOne({email}).select("+password")
+	const user = await userModel.findOne({ email }).select("+password");
 
-	if(!user) {
-		return res.status(401).json({message: "Email or Password is INVALID"})
+	if (!user) {
+		return res.status(401).json({
+			message: "Email or password is INVALID",
+		});
 	}
 
-	const isValidPassword = await user.comparePassword(password)
-	if(!isValidPassword) {
+	const isValidPassword = await user.comparePassword(password);
+
+	if (!isValidPassword) {
 		return res.status(401).json({
-			message: "Email or Password is INVALID",
+			message: "Email or password is INVALID",
 		});
 	}
 
@@ -79,4 +85,33 @@ async function userLoginController(req, res) {
 	});
 }
 
-export default { userRegisterController, userLoginController };
+/**
+ * - User Logout Controller
+ * - POST /api/auth/logout
+ */
+async function userLogoutController(req, res) {
+	const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
+	if (!token) {
+		return res.status(200).json({
+			message: "User logged out successfully",
+		});
+	}
+
+	await tokenBlackListModel.create({
+		token: token,
+	});
+
+	res.clearCookie("token");
+
+	res.status(200).json({
+		message: "User logged out successfully",
+	});
+}
+
+
+export default {
+	userRegisterController,
+	userLoginController,
+	userLogoutController,
+};
