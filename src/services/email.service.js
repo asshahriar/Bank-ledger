@@ -6,6 +6,8 @@ const transporter = nodemailer.createTransport({
 	secure: false,
 	requireTLS: true,
 
+	family: 4,
+
 	auth: {
 		type: "OAuth2",
 		user: process.env.EMAIL_USER,
@@ -15,17 +17,15 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-// Verify email server connection
 transporter.verify((error, success) => {
 	if (error) {
-		console.error("❌ Error connecting to email server:");
+		console.error("❌ Email server connection failed:");
 		console.error(error);
 	} else {
-		console.log("✅ Email server is ready to send messages");
+		console.log("✅ Email server is ready");
 	}
 });
 
-// Generic email sender
 const sendEmail = async (to, subject, text, html) => {
 	try {
 		const info = await transporter.sendMail({
@@ -44,35 +44,29 @@ const sendEmail = async (to, subject, text, html) => {
 		console.error("❌ Error sending email:");
 		console.error(error);
 
-		// Don't silently swallow the error
 		throw error;
 	}
 };
 
-// Registration email
 async function sendRegistrationEmail(userEmail, name) {
 	const subject = "Welcome to Backend Ledger!";
 
-	const text = `
-Hello ${name},
+	const text = `Hello ${name},
 
 Thank you for registering at Backend Ledger.
 We're excited to have you on board!
 
 Best regards,
-The Backend Ledger Team
-`;
+The Backend Ledger Team`;
 
 	const html = `
 		<p>Hello ${name},</p>
-
 		<p>
 			Thank you for registering at <strong>Backend Ledger</strong>.
 			We're excited to have you on board!
 		</p>
-
 		<p>
-			Best regards,<br />
+			Best regards,<br>
 			The Backend Ledger Team
 		</p>
 	`;
@@ -80,29 +74,24 @@ The Backend Ledger Team
 	return await sendEmail(userEmail, subject, text, html);
 }
 
-// Successful transaction email
 async function sendTransactionEmail(userEmail, name, amount, toAccount) {
 	const subject = "Transaction Successful!";
 
-	const text = `
-Hello ${name},
+	const text = `Hello ${name},
 
 Your transaction of $${amount} to account ${toAccount} was successful.
 
 Best regards,
-The Backend Ledger Team
-`;
+The Backend Ledger Team`;
 
 	const html = `
 		<p>Hello ${name},</p>
-
 		<p>
 			Your transaction of <strong>$${amount}</strong>
 			to account <strong>${toAccount}</strong> was successful.
 		</p>
-
 		<p>
-			Best regards,<br />
+			Best regards,<br>
 			The Backend Ledger Team
 		</p>
 	`;
@@ -110,34 +99,28 @@ The Backend Ledger Team
 	return await sendEmail(userEmail, subject, text, html);
 }
 
-// Failed transaction email
 async function sendTransactionFailureEmail(userEmail, name, amount, toAccount) {
 	const subject = "Transaction Failed";
 
-	const text = `
-Hello ${name},
+	const text = `Hello ${name},
 
-We regret to inform you that your transaction of $${amount} to account ${toAccount} has failed.
+Your transaction of $${amount} to account ${toAccount} has failed.
 
 Please try again later.
 
 Best regards,
-The Backend Ledger Team
-`;
+The Backend Ledger Team`;
 
 	const html = `
 		<p>Hello ${name},</p>
-
 		<p>
 			We regret to inform you that your transaction of
 			<strong>$${amount}</strong> to account
 			<strong>${toAccount}</strong> has failed.
 		</p>
-
 		<p>Please try again later.</p>
-
 		<p>
-			Best regards,<br />
+			Best regards,<br>
 			The Backend Ledger Team
 		</p>
 	`;
